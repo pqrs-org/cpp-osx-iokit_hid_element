@@ -17,14 +17,24 @@ namespace pqrs {
 namespace osx {
 class iokit_hid_element final {
 public:
+  iokit_hid_element(void) : iokit_hid_element(nullptr) {
+  }
+
   iokit_hid_element(IOHIDElementRef element) : element_(element) {
   }
 
   virtual ~iokit_hid_element(void) {
   }
 
-  cf::cf_ptr<IOHIDElementRef> get_element(void) const {
+  cf::cf_ptr<IOHIDElementRef> get_cf_ptr(void) const {
     return element_;
+  }
+
+  IOHIDElementRef get_element(void) const {
+    if (element_) {
+      return *element_;
+    }
+    return nullptr;
   }
 
   std::optional<CFIndex> get_logical_max(void) const {
@@ -165,6 +175,10 @@ public:
       return IOHIDElementIsWrapping(*element_);
     }
     return std::nullopt;
+  }
+
+  operator bool(void) const {
+    return element_;
   }
 
 private:
