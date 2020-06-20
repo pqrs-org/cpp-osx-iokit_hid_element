@@ -30,7 +30,7 @@ public:
     return element_;
   }
 
-  IOHIDElementRef get_element(void) const {
+  IOHIDElementRef get_raw_ptr(void) const {
     if (element_) {
       return *element_;
     }
