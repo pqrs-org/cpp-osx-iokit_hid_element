@@ -4,7 +4,7 @@
 #include <pqrs/osx/iokit_hid_element.hpp>
 
 TEST_CASE("iokit_hid_element nullptr") {
-  pqrs::osx::iokit_hid_element e(nullptr);
+  pqrs::osx::iokit_hid_element e;
 
   REQUIRE(e.get_cf_ptr() == false);
   REQUIRE(e.get_raw_ptr() == nullptr);
@@ -29,4 +29,8 @@ TEST_CASE("iokit_hid_element nullptr") {
   REQUIRE(e.is_virtual() == std::nullopt);
   REQUIRE(e.is_wrapping() == std::nullopt);
   REQUIRE(e == false);
+}
+
+TEST_CASE("get_iokit_hid_element_type_name") {
+  REQUIRE(pqrs::osx::get_iokit_hid_element_type_name(pqrs::osx::iokit_hid_element_type::input_misc) == "input_misc");
 }
