@@ -7,7 +7,7 @@ TEST_CASE("iokit_hid_element nullptr") {
   pqrs::osx::iokit_hid_element e(nullptr);
 
   REQUIRE(e.get_cf_ptr() == false);
-  REQUIRE(e.get_element() == nullptr);
+  REQUIRE(e.get_raw_ptr() == nullptr);
   REQUIRE(e.get_logical_max() == std::nullopt);
   REQUIRE(e.get_logical_min() == std::nullopt);
   REQUIRE(e.get_name() == std::nullopt);
