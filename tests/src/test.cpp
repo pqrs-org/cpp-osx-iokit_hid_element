@@ -32,5 +32,5 @@ TEST_CASE("iokit_hid_element nullptr") {
 }
 
 TEST_CASE("get_iokit_hid_element_type_name") {
-  REQUIRE(pqrs::osx::get_iokit_hid_element_type_name(pqrs::osx::iokit_hid_element_type::input_misc) == "input_misc");
+  REQUIRE(pqrs::osx::get_iokit_hid_element_type_name(pqrs::osx::iokit_hid_element_type::input_misc) == std::string("input_misc"));
 }
