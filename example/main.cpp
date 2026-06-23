@@ -1,6 +1,7 @@
 #include <pqrs/osx/iokit_hid_device.hpp>
 #include <pqrs/osx/iokit_hid_element.hpp>
 #include <pqrs/osx/iokit_registry_entry.hpp>
+#include <utility>
 
 namespace {
 void traverse(pqrs::osx::iokit_registry_entry registry_entry) {
@@ -9,11 +10,11 @@ void traverse(pqrs::osx::iokit_registry_entry registry_entry) {
       std::cout << "registry_entry_id: " << *id << std::endl;
     }
 
-    if (auto device = IOHIDDeviceCreate(kCFAllocatorDefault, *(registry_entry.get()))) {
-      pqrs::osx::iokit_hid_device d(device);
+    if (auto device = pqrs::cf::adopt_cf_ptr(IOHIDDeviceCreate(kCFAllocatorDefault, *(registry_entry.get())))) {
+      pqrs::osx::iokit_hid_device d(*device);
 
       for (auto&& element : d.make_elements()) {
-        pqrs::osx::iokit_hid_element e(*element);
+        pqrs::osx::iokit_hid_element e(element);
 
         if (auto logical_max = e.get_logical_max()) {
           std::cout << "logical_max " << *logical_max << std::endl;
@@ -48,7 +49,7 @@ void traverse(pqrs::osx::iokit_registry_entry registry_entry) {
         }
 
         if (auto type = e.get_type()) {
-          std::cout << "type " << static_cast<std::underlying_type<pqrs::osx::iokit_hid_element_type>::type>(*type) << std::endl;
+          std::cout << "type " << std::to_underlying(*type) << std::endl;
         }
 
         if (auto unit = e.get_unit()) {
@@ -95,8 +96,6 @@ void traverse(pqrs::osx::iokit_registry_entry registry_entry) {
           std::cout << "is_wrapping " << *is_wrapping << std::endl;
         }
       }
-
-      CFRelease(device);
     }
   }
 
@@ -112,7 +111,7 @@ void traverse(pqrs::osx::iokit_registry_entry registry_entry) {
 }
 } // namespace
 
-int main(void) {
+int main() {
   traverse(pqrs::osx::iokit_registry_entry::get_root_entry());
 
   return 0;

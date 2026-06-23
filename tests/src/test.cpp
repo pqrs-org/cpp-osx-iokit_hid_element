@@ -1,7 +1,8 @@
 #include <boost/ut.hpp>
 #include <pqrs/osx/iokit_hid_element.hpp>
+#include <string>
 
-int main(void) {
+int main() {
   using namespace boost::ut;
   using namespace boost::ut::literals;
 
@@ -33,8 +34,25 @@ int main(void) {
     expect(e == false);
   };
 
+  "iokit_hid_element cf_ptr"_test = [] {
+    pqrs::cf::cf_ptr<IOHIDElementRef> ptr;
+    pqrs::osx::iokit_hid_element e(ptr);
+
+    expect(e.get_cf_ptr() == false);
+    expect(e.get_raw_ptr() == nullptr);
+    expect(e == false);
+  };
+
   "get_iokit_hid_element_type_name"_test = [] {
     expect(pqrs::osx::get_iokit_hid_element_type_name(pqrs::osx::iokit_hid_element_type::input_misc) == std::string("input_misc"));
+    expect(pqrs::osx::get_iokit_hid_element_type_name(pqrs::osx::iokit_hid_element_type::input_button) == std::string("input_button"));
+    expect(pqrs::osx::get_iokit_hid_element_type_name(pqrs::osx::iokit_hid_element_type::input_axis) == std::string("input_axis"));
+    expect(pqrs::osx::get_iokit_hid_element_type_name(pqrs::osx::iokit_hid_element_type::input_scancodes) == std::string("input_scancodes"));
+    expect(pqrs::osx::get_iokit_hid_element_type_name(pqrs::osx::iokit_hid_element_type::input_null) == std::string("input_null"));
+    expect(pqrs::osx::get_iokit_hid_element_type_name(pqrs::osx::iokit_hid_element_type::output) == std::string("output"));
+    expect(pqrs::osx::get_iokit_hid_element_type_name(pqrs::osx::iokit_hid_element_type::feature) == std::string("feature"));
+    expect(pqrs::osx::get_iokit_hid_element_type_name(pqrs::osx::iokit_hid_element_type::collection) == std::string("collection"));
+    expect(pqrs::osx::get_iokit_hid_element_type_name(static_cast<pqrs::osx::iokit_hid_element_type>(-1)) == std::string("unknown"));
   };
 
   return 0;
