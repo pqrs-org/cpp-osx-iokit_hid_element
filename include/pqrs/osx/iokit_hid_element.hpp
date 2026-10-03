@@ -17,9 +17,7 @@
 namespace pqrs::osx {
 class iokit_hid_element final {
 public:
-  iokit_hid_element() noexcept
-      : iokit_hid_element(nullptr) {
-  }
+  iokit_hid_element() noexcept = default;
 
   iokit_hid_element(IOHIDElementRef element) noexcept
       : element_(element) {
